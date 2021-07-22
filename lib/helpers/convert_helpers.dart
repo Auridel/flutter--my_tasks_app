@@ -7,11 +7,11 @@ ListModel listFromJson(Map<String, dynamic> json) {
   final int candidateId = json['candidate_id'];
   final String createdAt = json['created_at'];
   final String updatedAt = json['updated_at'];
-  var todos;
+  List<Todos> todos = [];
   if (json['todos'] != null) {
-    todos = json['todos'].map((v) {
+    todos = json['todos'].map<Todos>((v) {
       return todosFromJson(v);
-    });
+    }).toList();
   }
   return ListModel(
       id: id,

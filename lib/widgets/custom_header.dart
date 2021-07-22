@@ -12,7 +12,6 @@ class CustomHeader extends StatelessWidget {
     final deviceSize = MediaQuery.of(context).size;
     return Container(
       width: deviceSize.width,
-      height: 250,
       child: Column(
         children: [
           SizedBox(
@@ -52,9 +51,6 @@ class CustomHeader extends StatelessWidget {
                 if (rightButton != null) Positioned(child: rightButton!, right: 20,),
               ],
             ),
-          ),
-          SizedBox(
-            height: 20,
           ),
         ],
       ),

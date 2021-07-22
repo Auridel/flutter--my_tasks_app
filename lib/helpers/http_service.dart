@@ -16,7 +16,7 @@ class HttpService {
 
   Future<String?> getLists() async {
     try {
-      final url = '$baseUrl/lists';
+      final url = '$baseUrl/list';
       final res = await http.get(Uri.parse(url));
       return res.body;
     } catch (e) {

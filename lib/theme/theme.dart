@@ -5,15 +5,15 @@ final ThemeData theme = ThemeData(
   primaryTextTheme: TextTheme(
       headline6: TextStyle(
         color: Colors.black87,
-        fontSize: 18,
+        fontSize: 22,
       ),
       headline4: TextStyle(
         color: Colors.black54,
-        fontSize: 10,
+        fontSize: 14,
       ),
       headline3: TextStyle(
         color: Colors.black87,
-        fontSize: 12,
+        fontSize: 16,
       ),
   ),
 );
