@@ -15,5 +15,9 @@ final ThemeData theme = ThemeData(
         color: Colors.black87,
         fontSize: 16,
       ),
+    overline: TextStyle(
+      decoration: TextDecoration.lineThrough,
+      color: Colors.black26,
+    )
   ),
 );

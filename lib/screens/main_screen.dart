@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_tasks_app/models/list_model.dart';
 import 'package:my_tasks_app/providers/list_provider.dart';
@@ -26,6 +27,7 @@ class MainScreen extends StatelessWidget {
             );
           } else {
             return SingleChildScrollView(
+              scrollDirection: Axis.vertical,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -41,6 +43,7 @@ class MainScreen extends StatelessWidget {
                   ),
                   Consumer<ListProvider>(
                     builder: (ctx, listData, child) => ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (ctx, i) => TaskList(listData.items[i]),
                       itemCount: listData.items.length,
                       shrinkWrap: true,

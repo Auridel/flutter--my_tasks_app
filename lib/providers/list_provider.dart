@@ -1,10 +1,11 @@
 import 'dart:convert';
+import 'package:collection/collection.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:my_tasks_app/helpers/convert_helpers.dart';
-import 'package:my_tasks_app/helpers/http_exception.dart';
 import 'package:my_tasks_app/helpers/http_service.dart';
 import 'package:my_tasks_app/models/list_model.dart';
+import 'package:my_tasks_app/models/todos.dart';
 
 class ListProvider with ChangeNotifier {
   List<ListModel> _items = [];
@@ -12,6 +13,19 @@ class ListProvider with ChangeNotifier {
   HttpService httpService = HttpService.getInstance();
 
   List<ListModel> get items => _items;
+
+  List<Todos> getTodosByListId(int id) {
+    final list = _items.firstWhereOrNull((element) => element.id == id);
+    if(list != null) {
+      return list.todos;
+    }
+    return [];
+  }
+
+  void toggleCheckTodo(Todos todo) {
+    todo.toggleChecked();
+    notifyListeners();
+  }
 
   Future<void> fetchAndSetLists() async {
     try {

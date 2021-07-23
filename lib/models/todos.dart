@@ -14,6 +14,10 @@ class Todos {
         required this.createdAt,
         required this.updatedAt});
 
+  void toggleChecked() {
+    checked = !checked;
+  }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
