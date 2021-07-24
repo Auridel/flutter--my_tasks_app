@@ -48,4 +48,15 @@ class ListProvider with ChangeNotifier {
       throw e;
     }
   }
+
+  Future<void> addTodo(int listId, String title) async {
+    try {
+      final resData = await httpService.addTodo(listId, title);
+      final list = _items.firstWhere((element) => element.id == listId);
+      list.todos.add(resData);
+      notifyListeners();
+    } catch (e) {
+      throw e;
+    }
+  }
 }

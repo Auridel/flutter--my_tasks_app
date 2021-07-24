@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:my_tasks_app/helpers/convert_helpers.dart';
 import 'package:my_tasks_app/helpers/http_exception.dart';
 import 'package:my_tasks_app/models/todos.dart';
 
@@ -38,6 +39,20 @@ class HttpService {
       }
     } on HttpException catch (e) {
       throw (e);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<Todos> addTodo(int listId, String title) async {
+    try {
+      final url = '$baseUrl/list/$listId/todo';
+      final res = await http.post(Uri.parse(url), body: {
+        'text': title,
+        'checked': false.toString(),
+      });
+      final Map<String, dynamic> resData = json.decode(res.body);
+      return todosFromJson(resData);
     } catch (e) {
       throw e;
     }

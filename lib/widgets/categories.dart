@@ -5,8 +5,9 @@ import 'package:provider/provider.dart';
 
 class Categories extends StatefulWidget {
   final int? selectedId;
+  final Function setSelectedCategory;
 
-  Categories(this.selectedId);
+  Categories({required this.setSelectedCategory, this.selectedId});
 
   @override
   _CategoriesState createState() => _CategoriesState();
@@ -23,9 +24,16 @@ class _CategoriesState extends State<Categories> {
     super.initState();
   }
 
+  void _updateListId() {
+    if(selectedListId != null) {
+      widget.setSelectedCategory(selectedListId);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    _updateListId();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
