@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_tasks_app/widgets/categories.dart';
 import 'package:my_tasks_app/widgets/custom_header.dart';
 
 class AddTaskScreen extends StatelessWidget {
@@ -16,10 +17,13 @@ class AddTaskScreen extends StatelessWidget {
             CustomHeader(
               isBackButton: true,
               rightButton: IconButton(
-                icon: Icon(Icons.check, color: Theme.of(context).primaryColor,),
+                icon: Icon(
+                  Icons.check,
+                  color: Theme.of(context).primaryColor,
+                ),
                 onPressed: () {
                   final isValid = _form.currentState?.validate();
-                  if(isValid == null || !isValid) {
+                  if (isValid == null || !isValid) {
                     return;
                   }
                 },
@@ -38,17 +42,23 @@ class AddTaskScreen extends StatelessWidget {
                       enabledBorder: InputBorder.none,
                     ),
                     style: TextStyle(
-                      color: Theme.of(context).primaryTextTheme.headline4?.color,
-                      fontSize: 18,
+                      color:
+                          Theme.of(context).primaryTextTheme.headline4?.color,
+                      fontSize: Theme.of(context)
+                          .primaryTextTheme
+                          .headline6
+                          ?.fontSize,
                     ),
                     validator: (value) {
-                      if(value == null || value.isEmpty) {
+                      if (value == null || value.isEmpty) {
                         return 'Ввените название задачи';
                       }
                       return null;
                     },
                   ),
-                ))
+                )),
+            SizedBox(height: 20,),
+            Categories(null),
           ],
         ),
       ),
