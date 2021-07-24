@@ -59,4 +59,16 @@ class ListProvider with ChangeNotifier {
       throw e;
     }
   }
+
+  Future<void> deleteList(int listId) async {
+    final idx = _items.indexWhere((element) => element.id == listId);
+    final list = _items[idx];
+    try {
+      await httpService.deleteList(listId);
+      _items.removeAt(idx);
+      notifyListeners();
+    } catch (e) {
+      throw e;
+    }
+  }
 }

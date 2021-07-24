@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:my_tasks_app/models/list_model.dart';
 import 'package:my_tasks_app/providers/list_provider.dart';
 import 'package:my_tasks_app/screens/add_task_screen.dart';
+import 'package:my_tasks_app/widgets/bottom_modal.dart';
 import 'package:my_tasks_app/widgets/custom_header.dart';
 import 'package:my_tasks_app/widgets/task_list.dart';
 import 'package:provider/provider.dart';
@@ -44,7 +44,11 @@ class MainScreen extends StatelessWidget {
                     rightButton: IconButton(
                       icon: Icon(Icons.category_outlined),
                       onPressed: () {
-                        print('Category pressed');
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (ctx) {
+                              return BottomModal();
+                            });
                       },
                     ),
                   ),

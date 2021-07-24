@@ -57,4 +57,19 @@ class HttpService {
       throw e;
     }
   }
+
+  Future<void> deleteList(int listId) async {
+    try {
+      final url = '$baseUrl/list/$listId';
+      final res = await http.delete(Uri.parse(url));
+      if(res.statusCode >= 400) {
+        throw HttpException('Delete failed');
+      }
+    } on HttpException catch (e) {
+      throw e;
+    } catch (e) {
+      throw e;
+    }
+
+  }
 }

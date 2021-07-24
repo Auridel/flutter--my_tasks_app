@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_tasks_app/helpers/error_snackbar.dart';
 import 'package:my_tasks_app/helpers/todos_filter.dart';
 import 'package:my_tasks_app/models/list_model.dart';
 import 'package:my_tasks_app/widgets/completed_tasks_list.dart';
@@ -20,11 +21,7 @@ class _TaskListState extends State<TaskList> {
   }
 
   void _showNetworkError() {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(
-          'Произошла ошибка. Попробуйте повторить позднее',
-          textAlign: TextAlign.center,
-        )));
+    showError(context);
   }
 
   @override

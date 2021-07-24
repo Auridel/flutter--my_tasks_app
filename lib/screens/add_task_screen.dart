@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_tasks_app/helpers/error_snackbar.dart';
 import 'package:my_tasks_app/providers/list_provider.dart';
 import 'package:my_tasks_app/widgets/categories.dart';
 import 'package:my_tasks_app/widgets/custom_header.dart';
@@ -32,12 +33,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         setState(() {
           isFetching = false;
         });
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-            'Произошла ошибка. Пожалуйста повторите позднее',
-            textAlign: TextAlign.center,
-          ),
-        ));
+        showError(context);
       });
     }
   }
