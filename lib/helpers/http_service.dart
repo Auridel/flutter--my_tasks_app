@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:my_tasks_app/helpers/convert_helpers.dart';
 import 'package:my_tasks_app/helpers/http_exception.dart';
+import 'package:my_tasks_app/models/list_model.dart';
 import 'package:my_tasks_app/models/todos.dart';
 
 class HttpService {
@@ -70,6 +71,19 @@ class HttpService {
     } catch (e) {
       throw e;
     }
+  }
 
+  Future<ListModel> addList(String title) async {
+    try {
+      final url = '$baseUrl/list';
+      final res = await http.post(Uri.parse(url), body: {
+        'title': title,
+      });
+      final Map<String, dynamic> resData = json.decode(res.body);
+      final ListModel list = listFromJson(resData);
+      return list;
+    } catch (e) {
+      throw e;
+    }
   }
 }

@@ -7,18 +7,31 @@ import 'package:my_tasks_app/widgets/custom_header.dart';
 import 'package:my_tasks_app/widgets/task_list.dart';
 import 'package:provider/provider.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   static const routeName = '/main';
+
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  var isListsNotEmpty = false;
+
+  @override
+  void initState() {
+    isListsNotEmpty = Provider.of<ListProvider>(context, listen: false).items.length > 0;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: isListsNotEmpty? FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
           Navigator.of(context).pushNamed(AddTaskScreen.routeName);
         },
-      ),
+      ) : null,
       body: FutureBuilder(
         future: Provider.of<ListProvider>(context, listen: false)
             .fetchAndSetLists(),
@@ -53,12 +66,21 @@ class MainScreen extends StatelessWidget {
                     ),
                   ),
                   Consumer<ListProvider>(
-                    builder: (ctx, listData, child) => ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (ctx, i) => TaskList(listData.items[i]),
-                      itemCount: listData.items.length,
-                      shrinkWrap: true,
-                    ),
+                    builder: (ctx, listData, child) {
+                      final lists = listData.items;
+                      final isListsHasItems = lists.length > 0;
+                      if(isListsNotEmpty != isListsHasItems) {
+                        setState(() {
+                          isListsNotEmpty = isListsHasItems;
+                        });
+                      }
+                      return ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (ctx, i) => TaskList(lists[i]),
+                        itemCount: lists.length,
+                        shrinkWrap: true,
+                      );
+                    }
                   ),
                   SizedBox(
                     height: 20,

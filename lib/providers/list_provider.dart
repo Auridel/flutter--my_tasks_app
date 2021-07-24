@@ -71,4 +71,14 @@ class ListProvider with ChangeNotifier {
       throw e;
     }
   }
+
+  Future<void> addList(String title) async {
+    try {
+      final ListModel list = await httpService.addList(title);
+      _items.add(list);
+      notifyListeners();
+    } catch (e) {
+      throw e;
+    }
+  }
 }
