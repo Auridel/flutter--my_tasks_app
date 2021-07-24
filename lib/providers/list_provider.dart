@@ -22,9 +22,16 @@ class ListProvider with ChangeNotifier {
     return [];
   }
 
-  void toggleCheckTodo(Todos todo) {
-    todo.toggleChecked();
-    notifyListeners();
+  Future<void> toggleCheckTodo(Todos todo) async {
+    try {
+      todo.toggleChecked();
+      notifyListeners();
+      await httpService.updateTodo(todo.id, todo.listId, todo.text, !todo.checked);
+    } catch (e) {
+      todo.toggleChecked();
+      notifyListeners();
+      throw e;
+    }
   }
 
   Future<void> fetchAndSetLists() async {

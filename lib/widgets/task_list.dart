@@ -19,6 +19,14 @@ class _TaskListState extends State<TaskList> {
     super.initState();
   }
 
+  void _showNetworkError() {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(
+          'Произошла ошибка. Попробуйте повторить позднее',
+          textAlign: TextAlign.center,
+        )));
+  }
+
   @override
   Widget build(BuildContext context) {
     final todos = filterTodosByChecked(widget.list.todos);
@@ -29,7 +37,7 @@ class _TaskListState extends State<TaskList> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            widget.list.title,
+            widget.list.title.toUpperCase(),
             style: TextStyle(
               color: Theme.of(context).primaryTextTheme.headline4?.color,
               fontSize: Theme.of(context).primaryTextTheme.headline4?.fontSize,
@@ -41,11 +49,11 @@ class _TaskListState extends State<TaskList> {
           ),
           ListView.builder(
             physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (ctx, i) => TaskItem(todos['uncompletedTodos']![i]),
+            itemBuilder: (ctx, i) => TaskItem(todos['uncompletedTodos']![i], _showNetworkError),
             itemCount: todos['uncompletedTodos']!.length,
             shrinkWrap: true,
           ),
-          CompletedTasksList(todos['completedTodos'] ?? []),
+          CompletedTasksList(todos['completedTodos'] ?? [], _showNetworkError),
         ],
       ),
     );
