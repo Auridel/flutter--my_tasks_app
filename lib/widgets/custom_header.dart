@@ -30,7 +30,7 @@ class CustomHeader extends StatelessWidget {
                         icon: Icon(Icons.arrow_back),
                         color: Colors.black,
                         onPressed: () {
-                          print('back');
+                          Navigator.of(context).pop();
                         },
                       )),
                 if (title != null && title!.isNotEmpty)

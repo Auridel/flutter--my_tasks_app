@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_tasks_app/helpers/custom_route_transition.dart';
 
 final ThemeData theme = ThemeData(
   primarySwatch: Colors.blue,
@@ -20,4 +21,8 @@ final ThemeData theme = ThemeData(
       color: Colors.black26,
     )
   ),
+  pageTransitionsTheme: PageTransitionsTheme(builders: {
+    TargetPlatform.android: CustomTransitionBuilder(),
+    TargetPlatform.iOS: CustomTransitionBuilder(),
+  }),
 );

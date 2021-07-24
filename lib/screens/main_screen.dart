@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_tasks_app/models/list_model.dart';
 import 'package:my_tasks_app/providers/list_provider.dart';
+import 'package:my_tasks_app/screens/add_task_screen.dart';
 import 'package:my_tasks_app/widgets/custom_header.dart';
 import 'package:my_tasks_app/widgets/task_list.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +13,12 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () {
+          Navigator.of(context).pushNamed(AddTaskScreen.routeName);
+        },
+      ),
       body: FutureBuilder(
         future: Provider.of<ListProvider>(context, listen: false)
             .fetchAndSetLists(),
@@ -48,6 +55,9 @@ class MainScreen extends StatelessWidget {
                       itemCount: listData.items.length,
                       shrinkWrap: true,
                     ),
+                  ),
+                  SizedBox(
+                    height: 20,
                   ),
                 ],
               ),
