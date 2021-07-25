@@ -12,7 +12,7 @@ class HttpService {
   static HttpService? _instance;
 
   static HttpService getInstance() {
-    if(_instance == null) {
+    if (_instance == null) {
       _instance = HttpService();
     }
     return _instance!;
@@ -24,18 +24,19 @@ class HttpService {
       final res = await http.get(Uri.parse(url));
       return res.body;
     } catch (e) {
-      print(e.toString());
+      throw e;
     }
   }
 
-  Future<void> updateTodo(int taskId, int listId, String title, bool checked) async {
+  Future<void> updateTodo(
+      int taskId, int listId, String title, bool checked) async {
     try {
       final url = '$baseUrl/list/$listId/todo/$taskId';
       final res = await http.patch(Uri.parse(url), body: {
         'text': title,
         'checked': checked.toString(),
       });
-      if(res.statusCode >= 400) {
+      if (res.statusCode >= 400) {
         throw HttpException(res.toString());
       }
     } on HttpException catch (e) {
@@ -45,12 +46,12 @@ class HttpService {
     }
   }
 
-  Future<Todos> addTodo(int listId, String title) async {
+  Future<Todos> addTodo(int listId, String title, bool checked) async {
     try {
       final url = '$baseUrl/list/$listId/todo';
       final res = await http.post(Uri.parse(url), body: {
         'text': title,
-        'checked': false.toString(),
+        'checked': checked.toString(),
       });
       final Map<String, dynamic> resData = json.decode(res.body);
       return todosFromJson(resData);
@@ -63,7 +64,7 @@ class HttpService {
     try {
       final url = '$baseUrl/list/$listId';
       final res = await http.delete(Uri.parse(url));
-      if(res.statusCode >= 400) {
+      if (res.statusCode >= 400) {
         throw HttpException('Delete failed');
       }
     } on HttpException catch (e) {
@@ -82,6 +83,18 @@ class HttpService {
       final Map<String, dynamic> resData = json.decode(res.body);
       final ListModel list = listFromJson(resData);
       return list;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> deleteTask(int listId, int taskId) async {
+    try {
+      final url = '$baseUrl/list/$listId/todo/$taskId';
+      final res = await http.delete(Uri.parse(url));
+      if (res.statusCode >= 400) {
+        throw HttpException('Delete task error');
+      }
     } catch (e) {
       throw e;
     }

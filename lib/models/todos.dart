@@ -1,6 +1,6 @@
 class Todos {
   final int id;
-  final String text;
+  String text;
   final int listId;
   bool checked;
   final String createdAt;
@@ -16,6 +16,12 @@ class Todos {
 
   void toggleChecked() {
     checked = !checked;
+  }
+
+  void changeText(String text) {
+    if(text.isNotEmpty) {
+      this.text = text;
+    }
   }
 
   Map<String, dynamic> toJson() {

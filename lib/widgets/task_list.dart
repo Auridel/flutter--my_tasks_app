@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:my_tasks_app/helpers/error_snackbar.dart';
 import 'package:my_tasks_app/helpers/todos_filter.dart';
 import 'package:my_tasks_app/models/list_model.dart';
+import 'package:my_tasks_app/providers/list_provider.dart';
 import 'package:my_tasks_app/widgets/completed_tasks_list.dart';
 import 'package:my_tasks_app/widgets/task_item.dart';
+import 'package:provider/provider.dart';
 
 class TaskList extends StatefulWidget {
   final ListModel list;
@@ -22,6 +24,12 @@ class _TaskListState extends State<TaskList> {
 
   void _showNetworkError() {
     showError(context);
+  }
+
+  void _removeTask(int taskId) {
+    Provider.of<ListProvider>(context, listen: false).deleteTask(widget.list.id, taskId).catchError((_) {
+      _showNetworkError();
+    });
   }
 
   @override
@@ -46,11 +54,11 @@ class _TaskListState extends State<TaskList> {
           ),
           ListView.builder(
             physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (ctx, i) => TaskItem(task: todos['uncompletedTodos']![i], showError: _showNetworkError),
+            itemBuilder: (ctx, i) => TaskItem(task: todos['uncompletedTodos']![i], showError: _showNetworkError, removeTask: _removeTask),
             itemCount: todos['uncompletedTodos']!.length,
             shrinkWrap: true,
           ),
-          CompletedTasksList(todos['completedTodos'] ?? [], _showNetworkError),
+          CompletedTasksList(todos['completedTodos'] ?? [], _showNetworkError, _removeTask),
         ],
       ),
     );

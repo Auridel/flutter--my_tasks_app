@@ -8,8 +8,9 @@ import 'package:provider/provider.dart';
 class TaskItem extends StatelessWidget {
   final Todos task;
   final Function() showError;
+  final Function(int taskId) removeTask;
 
-  TaskItem({required this.task, required this.showError, Key? key}): super(key: key);
+  TaskItem({required this.task, required this.showError, required this.removeTask, Key? key}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +50,9 @@ class TaskItem extends StatelessWidget {
                 color: theme.errorColor,
               ),
             ),
+            onTap: () {
+              removeTask(task.id);
+            },
           ),
         )
       ],

@@ -34,24 +34,39 @@ class ListProvider with ChangeNotifier {
     }
   }
 
+  Future<void> editTask(Todos task, int newListId, String newTitle) async {
+    try {
+      if(newListId != task.listId) {
+        final list = _items.firstWhere((element) => element.id == newListId);
+        await httpService.deleteTask(task.listId, task.id);
+        final newTask = await httpService.addTodo(newListId, newTitle, task.checked);
+        list.todos.add(newTask);
+      } else {
+        await httpService.updateTodo(task.id, task.listId, newTitle, task.checked);
+        task.changeText(newTitle);
+      }
+      notifyListeners();
+    } catch (e) {
+      throw e;
+    }
+  }
+
   Future<void> fetchAndSetLists() async {
     try {
       final resData = await httpService.getLists();
-      print(resData);
       if(resData != null && resData.isNotEmpty) {
         final List<dynamic> data = json.decode(resData);
         _items = data.map((e) => listFromJson(e)).toList();
         notifyListeners();
       }
     } catch (e) {
-      print(e.toString());
       throw e;
     }
   }
 
   Future<void> addTodo(int listId, String title) async {
     try {
-      final resData = await httpService.addTodo(listId, title);
+      final resData = await httpService.addTodo(listId, title, false);
       final list = _items.firstWhere((element) => element.id == listId);
       list.todos.add(resData);
       notifyListeners();
@@ -61,11 +76,9 @@ class ListProvider with ChangeNotifier {
   }
 
   Future<void> deleteList(int listId) async {
-    final idx = _items.indexWhere((element) => element.id == listId);
-    final list = _items[idx];
     try {
       await httpService.deleteList(listId);
-      _items.removeAt(idx);
+      _items.removeWhere((e) => e.id == listId);
       notifyListeners();
     } catch (e) {
       throw e;
@@ -78,6 +91,21 @@ class ListProvider with ChangeNotifier {
       _items.add(list);
       notifyListeners();
     } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> deleteTask(int listId, int taskId) async {
+    final list = _items.firstWhere((element) => element.id == listId);
+    final idx = list.todos.indexWhere((element) => element.id == taskId);
+    final task = list.todos[idx];
+    try {
+      list.todos.removeAt(idx);
+      notifyListeners();
+      await httpService.deleteTask(listId, taskId);
+    } catch (e) {
+      list.todos.insert(idx, task);
+      notifyListeners();
       throw e;
     }
   }
