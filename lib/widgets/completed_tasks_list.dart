@@ -31,8 +31,7 @@ class _CompletedTasksListState extends State<CompletedTasksList> {
               });
             },
             child: ListTile(
-              leading: Icon(
-                  isExpanded ? Icons.keyboard_arrow_up : Icons
+            leading: Icon(isExpanded ? Icons.keyboard_arrow_up : Icons
                       .keyboard_arrow_down),
               title: Text('Завершенные',
                   style: TextStyle(

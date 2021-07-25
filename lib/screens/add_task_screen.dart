@@ -83,7 +83,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   }
 
   void _onSubmitHandler() {
-    if(routeArgs != null) {
+    if (routeArgs != null) {
       _editTask();
       return;
     }

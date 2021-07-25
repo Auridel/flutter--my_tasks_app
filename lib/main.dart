@@ -23,9 +23,7 @@ class MyApp extends StatelessWidget {
         theme: theme,
         builder: (ctx, child) {
           return ScrollConfiguration(
-              behavior: CustomScrollBehavior(),
-              child: child!
-          );
+              behavior: CustomScrollBehavior(), child: child!);
         },
         home: MainScreen(),
         routes: {
@@ -36,6 +34,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-

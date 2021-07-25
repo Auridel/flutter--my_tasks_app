@@ -95,12 +95,19 @@ class _MainScreenState extends State<MainScreen> {
                       Future.delayed(Duration.zero, () async {
                         _setListsIsEmpty(isListsHasItems);
                       });
-                      return ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (ctx, i) => TaskList(lists[i]),
-                        itemCount: lists.length,
-                        shrinkWrap: true,
-                      );
+                      return lists.length == 0
+                          ? Center(
+                              child: Image.asset(
+                                'assets/images/empty.jpg',
+                                fit: BoxFit.contain,
+                              ),
+                            )
+                          : ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (ctx, i) => TaskList(lists[i]),
+                              itemCount: lists.length,
+                              shrinkWrap: true,
+                            );
                     }),
                   ),
                 ]);

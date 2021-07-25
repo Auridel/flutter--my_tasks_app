@@ -18,14 +18,13 @@ final ThemeData theme = ThemeData(
         color: Colors.black87,
         fontSize: 16,
       ),
-    overline: TextStyle(
-      decoration: TextDecoration.lineThrough,
-      color: Colors.black26,
-    ),
-    headline5: TextStyle(
-      fontSize: 20,
-    )
-  ),
+      overline: TextStyle(
+        decoration: TextDecoration.lineThrough,
+        color: Colors.black26,
+      ),
+      headline5: TextStyle(
+        fontSize: 20,
+      )),
   pageTransitionsTheme: PageTransitionsTheme(builders: {
     TargetPlatform.android: CustomTransitionBuilder(),
     TargetPlatform.iOS: CustomTransitionBuilder(),

@@ -30,5 +30,11 @@ Todos todosFromJson(Map<String, dynamic> json) {
   final String createdAt = json['created_at'];
   final String updatedAt = json['updated_at'];
 
-  return Todos(id: id, text: text, listId: listId, checked: checked, createdAt: createdAt, updatedAt: updatedAt);
+  return Todos(
+      id: id,
+      text: text,
+      listId: listId,
+      checked: checked,
+      createdAt: createdAt,
+      updatedAt: updatedAt);
 }

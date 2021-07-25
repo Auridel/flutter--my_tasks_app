@@ -8,18 +8,18 @@ class Todos {
 
   Todos(
       {required this.id,
-        required this.text,
-        required this.listId,
-        required this.checked,
-        required this.createdAt,
-        required this.updatedAt});
+      required this.text,
+      required this.listId,
+      required this.checked,
+      required this.createdAt,
+      required this.updatedAt});
 
   void toggleChecked() {
     checked = !checked;
   }
 
   void changeText(String text) {
-    if(text.isNotEmpty) {
+    if (text.isNotEmpty) {
       this.text = text;
     }
   }

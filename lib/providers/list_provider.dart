@@ -16,7 +16,7 @@ class ListProvider with ChangeNotifier {
 
   List<Todos> getTodosByListId(int id) {
     final list = _items.firstWhereOrNull((element) => element.id == id);
-    if(list != null) {
+    if (list != null) {
       return list.todos;
     }
     return [];
@@ -26,7 +26,8 @@ class ListProvider with ChangeNotifier {
     try {
       todo.toggleChecked();
       notifyListeners();
-      await httpService.updateTodo(todo.id, todo.listId, todo.text, !todo.checked);
+      await httpService.updateTodo(
+          todo.id, todo.listId, todo.text, !todo.checked);
     } catch (e) {
       todo.toggleChecked();
       notifyListeners();
@@ -36,15 +37,18 @@ class ListProvider with ChangeNotifier {
 
   Future<void> editTask(Todos task, int newListId, String newTitle) async {
     try {
-      if(newListId != task.listId) {
-        final currentList = _items.firstWhere((element) => element.id == task.listId);
+      if (newListId != task.listId) {
+        final currentList =
+            _items.firstWhere((element) => element.id == task.listId);
         final newList = _items.firstWhere((element) => element.id == newListId);
         await httpService.deleteTask(task.listId, task.id);
-        final newTask = await httpService.addTodo(newListId, newTitle, task.checked);
+        final newTask =
+            await httpService.addTodo(newListId, newTitle, task.checked);
         currentList.todos.removeWhere((element) => element.id == task.id);
         newList.todos.add(newTask);
       } else {
-        await httpService.updateTodo(task.id, task.listId, newTitle, task.checked);
+        await httpService.updateTodo(
+            task.id, task.listId, newTitle, task.checked);
         task.changeText(newTitle);
       }
       notifyListeners();
@@ -56,7 +60,7 @@ class ListProvider with ChangeNotifier {
   Future<void> fetchAndSetLists() async {
     try {
       final resData = await httpService.getLists();
-      if(resData != null && resData.isNotEmpty) {
+      if (resData != null && resData.isNotEmpty) {
         final List<dynamic> data = json.decode(resData);
         _items = data.map((e) => listFromJson(e)).toList();
         notifyListeners();

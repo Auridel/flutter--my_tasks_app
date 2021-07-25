@@ -20,12 +20,13 @@ class _CategoriesState extends State<Categories> {
   @override
   void initState() {
     lists = Provider.of<ListProvider>(context, listen: false).items;
-    selectedListId = lists.length > 0 ? (widget.selectedId ?? lists[0].id) : null;
+    selectedListId =
+        lists.length > 0 ? (widget.selectedId ?? lists[0].id) : null;
     super.initState();
   }
 
   void _updateListId() {
-    if(selectedListId != null) {
+    if (selectedListId != null) {
       widget.setSelectedCategory(selectedListId);
     }
   }
@@ -62,9 +63,14 @@ class _CategoriesState extends State<Categories> {
                 title: Text(
                   lists[i].title,
                 ),
-                trailing: Icon(selectedListId == lists[i].id
-                    ? Icons.radio_button_on
-                    : Icons.radio_button_off, color: selectedListId == lists[i].id ? theme.primaryColor : Colors.black54,),
+                trailing: Icon(
+                  selectedListId == lists[i].id
+                      ? Icons.radio_button_on
+                      : Icons.radio_button_off,
+                  color: selectedListId == lists[i].id
+                      ? theme.primaryColor
+                      : Colors.black54,
+                ),
               ),
             ),
             itemCount: lists.length,

@@ -11,7 +11,12 @@ class TaskItem extends StatelessWidget {
   final Function() showError;
   final Function(int taskId) removeTask;
 
-  TaskItem({required this.task, required this.showError, required this.removeTask, Key? key}): super(key: key);
+  TaskItem(
+      {required this.task,
+      required this.showError,
+      required this.removeTask,
+      Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +39,8 @@ class TaskItem extends StatelessWidget {
                 color: Colors.black54,
               ),
               onTap: () {
-                Navigator.of(context).pushNamed(AddTaskScreen.routeName, arguments: task);
+                Navigator.of(context)
+                    .pushNamed(AddTaskScreen.routeName, arguments: task);
               },
             ),
           ),

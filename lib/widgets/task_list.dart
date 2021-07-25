@@ -27,7 +27,9 @@ class _TaskListState extends State<TaskList> {
   }
 
   void _removeTask(int taskId) {
-    Provider.of<ListProvider>(context, listen: false).deleteTask(widget.list.id, taskId).catchError((_) {
+    Provider.of<ListProvider>(context, listen: false)
+        .deleteTask(widget.list.id, taskId)
+        .catchError((_) {
       _showNetworkError();
     });
   }
@@ -54,11 +56,15 @@ class _TaskListState extends State<TaskList> {
           ),
           ListView.builder(
             physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (ctx, i) => TaskItem(task: todos['uncompletedTodos']![i], showError: _showNetworkError, removeTask: _removeTask),
+            itemBuilder: (ctx, i) => TaskItem(
+                task: todos['uncompletedTodos']![i],
+                showError: _showNetworkError,
+                removeTask: _removeTask),
             itemCount: todos['uncompletedTodos']!.length,
             shrinkWrap: true,
           ),
-          CompletedTasksList(todos['completedTodos'] ?? [], _showNetworkError, _removeTask),
+          CompletedTasksList(
+              todos['completedTodos'] ?? [], _showNetworkError, _removeTask),
         ],
       ),
     );

@@ -1,4 +1,3 @@
-
 import 'package:my_tasks_app/models/todos.dart';
 
 class ListModel {
@@ -11,12 +10,11 @@ class ListModel {
 
   ListModel(
       {required this.id,
-        required this.title,
-        required this.candidateId,
-        required this.createdAt,
-        required this.updatedAt,
-        required this.todos});
-
+      required this.title,
+      required this.candidateId,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.todos});
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
