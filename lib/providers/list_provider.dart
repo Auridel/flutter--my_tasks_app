@@ -37,10 +37,12 @@ class ListProvider with ChangeNotifier {
   Future<void> editTask(Todos task, int newListId, String newTitle) async {
     try {
       if(newListId != task.listId) {
-        final list = _items.firstWhere((element) => element.id == newListId);
+        final currentList = _items.firstWhere((element) => element.id == task.listId);
+        final newList = _items.firstWhere((element) => element.id == newListId);
         await httpService.deleteTask(task.listId, task.id);
         final newTask = await httpService.addTodo(newListId, newTitle, task.checked);
-        list.todos.add(newTask);
+        currentList.todos.removeWhere((element) => element.id == task.id);
+        newList.todos.add(newTask);
       } else {
         await httpService.updateTodo(task.id, task.listId, newTitle, task.checked);
         task.changeText(newTitle);

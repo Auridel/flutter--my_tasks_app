@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_tasks_app/helpers/error_snackbar.dart';
+import 'package:my_tasks_app/models/todos.dart';
 import 'package:my_tasks_app/providers/list_provider.dart';
 import 'package:my_tasks_app/widgets/categories.dart';
 import 'package:my_tasks_app/widgets/custom_header.dart';
@@ -17,14 +18,54 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   var isFetching = false;
   int? selectedCategory;
   String title = '';
+  Todos? routeArgs;
+  bool _isInit = true;
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      routeArgs = ModalRoute.of(context)?.settings.arguments as Todos?;
+      if (routeArgs != null) {
+        setState(() {
+          title = routeArgs!.text;
+          selectedCategory = routeArgs!.listId;
+        });
+      }
+      print('${routeArgs?.text}');
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
 
   void _setSelectedCategory(int id) {
     selectedCategory = id;
   }
 
-  void _addTask() {
+  bool _validateFields() {
     final isValid = _form.currentState?.validate();
-    if (isValid != null && isValid && selectedCategory != null) {
+    return isValid != null && isValid && selectedCategory != null;
+  }
+
+  void _editTask() {
+    if (_validateFields() && routeArgs != null && selectedCategory != null) {
+      setState(() {
+        isFetching = true;
+      });
+      Provider.of<ListProvider>(context, listen: false)
+          .editTask(routeArgs!, selectedCategory!, title)
+          .then((_) {
+        Navigator.of(context).pop();
+      }).catchError((_) {
+        setState(() {
+          isFetching = false;
+          showError(context);
+        });
+      });
+    }
+  }
+
+  void _addTask() {
+    if (_validateFields()) {
       setState(() {
         isFetching = true;
       });
@@ -39,6 +80,14 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
         showError(context);
       });
     }
+  }
+
+  void _onSubmitHandler() {
+    if(routeArgs != null) {
+      _editTask();
+      return;
+    }
+    _addTask();
   }
 
   @override
@@ -65,7 +114,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                         color: theme.primaryColor,
                       ),
                       onPressed: () {
-                        _addTask();
+                        _onSubmitHandler();
                       },
                     )
                   : Padding(
@@ -88,11 +137,13 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 30),
                       child: TextFormField(
+                        initialValue: routeArgs?.text ?? '',
                         decoration: InputDecoration(
                           hintText: 'Название задачи',
                           hintStyle: TextStyle(
                             color: theme.primaryTextTheme.headline4?.color,
-                            fontSize: theme.primaryTextTheme.headline5?.fontSize,
+                            fontSize:
+                                theme.primaryTextTheme.headline5?.fontSize,
                           ),
                           disabledBorder: InputBorder.none,
                           border: InputBorder.none,
@@ -118,6 +169,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 ),
                 Categories(
                   setSelectedCategory: _setSelectedCategory,
+                  selectedId: selectedCategory,
                 ),
               ],
             ),

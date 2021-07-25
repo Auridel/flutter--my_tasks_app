@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:my_tasks_app/models/todos.dart';
 import 'package:my_tasks_app/providers/list_provider.dart';
+import 'package:my_tasks_app/screens/add_task_screen.dart';
 import 'package:provider/provider.dart';
 
 class TaskItem extends StatelessWidget {
@@ -32,6 +33,9 @@ class TaskItem extends StatelessWidget {
                 Icons.edit,
                 color: Colors.black54,
               ),
+              onTap: () {
+                Navigator.of(context).pushNamed(AddTaskScreen.routeName, arguments: task);
+              },
             ),
           ),
         )
