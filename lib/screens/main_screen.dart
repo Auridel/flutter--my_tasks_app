@@ -62,6 +62,7 @@ class _MainScreenState extends State<MainScreen> {
             );
           } else {
             return CustomScrollView(
+                physics: ClampingScrollPhysics(),
                 clipBehavior: Clip.hardEdge,
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,

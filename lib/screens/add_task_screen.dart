@@ -45,7 +45,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
+      backgroundColor: theme.backgroundColor,
       body: CustomScrollView(
+        physics: ClampingScrollPhysics(),
         scrollDirection: Axis.vertical,
         slivers: [
           SliverAppBar(
@@ -67,14 +69,14 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                       },
                     )
                   : Padding(
-                    padding: const EdgeInsets.only(right: 15, bottom: 15),
-                    child: SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                        )),
-                  ),
+                      padding: const EdgeInsets.only(right: 15, bottom: 15),
+                      child: SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                          )),
+                    ),
             ),
           ),
           SliverFillRemaining(
@@ -90,6 +92,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                           hintText: 'Название задачи',
                           hintStyle: TextStyle(
                             color: theme.primaryTextTheme.headline4?.color,
+                            fontSize: theme.primaryTextTheme.headline5?.fontSize,
                           ),
                           disabledBorder: InputBorder.none,
                           border: InputBorder.none,
@@ -101,7 +104,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Ввените название задачи';
+                            return 'Введите название задачи';
                           }
                           return null;
                         },

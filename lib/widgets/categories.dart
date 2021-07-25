@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 class Categories extends StatefulWidget {
   final int? selectedId;
-  final Function setSelectedCategory;
+  final Function(int id) setSelectedCategory;
 
   Categories({required this.setSelectedCategory, this.selectedId});
 

@@ -21,6 +21,9 @@ final ThemeData theme = ThemeData(
     overline: TextStyle(
       decoration: TextDecoration.lineThrough,
       color: Colors.black26,
+    ),
+    headline5: TextStyle(
+      fontSize: 20,
     )
   ),
   pageTransitionsTheme: PageTransitionsTheme(builders: {

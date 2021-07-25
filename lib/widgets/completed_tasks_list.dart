@@ -4,7 +4,7 @@ import 'package:my_tasks_app/widgets/task_item.dart';
 
 class CompletedTasksList extends StatefulWidget {
   final List<Todos> todos;
-  final Function showError;
+  final Function() showError;
 
   CompletedTasksList(this.todos, this.showError);
 
@@ -45,7 +45,7 @@ class _CompletedTasksListState extends State<CompletedTasksList> {
             child: ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemBuilder: (ctx, i) => TaskItem(widget.todos[i], widget.showError),
+              itemBuilder: (ctx, i) => TaskItem(task: widget.todos[i], showError:  widget.showError),
               itemCount: widget.todos.length,
             ),
           )

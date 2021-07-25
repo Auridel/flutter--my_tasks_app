@@ -46,7 +46,7 @@ class _TaskListState extends State<TaskList> {
           ),
           ListView.builder(
             physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (ctx, i) => TaskItem(todos['uncompletedTodos']![i], _showNetworkError),
+            itemBuilder: (ctx, i) => TaskItem(task: todos['uncompletedTodos']![i], showError: _showNetworkError),
             itemCount: todos['uncompletedTodos']!.length,
             shrinkWrap: true,
           ),
