@@ -25,6 +25,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   void _addTask() {
     final isValid = _form.currentState?.validate();
     if (isValid != null && isValid && selectedCategory != null) {
+      setState(() {
+        isFetching = true;
+      });
       Provider.of<ListProvider>(context, listen: false)
           .addTodo(selectedCategory!, title)
           .then((_) {
@@ -42,12 +45,16 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      body: SingleChildScrollView(
+      body: CustomScrollView(
         scrollDirection: Axis.vertical,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            CustomHeader(
+        slivers: [
+          SliverAppBar(
+            leading: Container(),
+            pinned: true,
+            floating: false,
+            expandedHeight: 101,
+            backgroundColor: theme.backgroundColor,
+            flexibleSpace: CustomHeader(
               isBackButton: true,
               rightButton: !isFetching
                   ? IconButton(
@@ -56,56 +63,63 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                         color: theme.primaryColor,
                       ),
                       onPressed: () {
-                        setState(() {
-                          isFetching = true;
-                        });
                         _addTask();
                       },
                     )
-                  : SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                      )),
-            ),
-            Form(
-                key: _form,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      hintText: 'Название задачи',
-                      hintStyle: TextStyle(
-                        color: theme.primaryTextTheme.headline4?.color,
-                      ),
-                      disabledBorder: InputBorder.none,
-                      border: InputBorder.none,
-                      enabledBorder: InputBorder.none,
-                    ),
-                    style: TextStyle(
-                      color: theme.primaryTextTheme.headline4?.color,
-                      fontSize: theme.primaryTextTheme.headline6?.fontSize,
-                    ),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Ввените название задачи';
-                      }
-                      return null;
-                    },
-                    onChanged: (value) {
-                      title = value;
-                    },
+                  : Padding(
+                    padding: const EdgeInsets.only(right: 15, bottom: 15),
+                    child: SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                        )),
                   ),
-                )),
-            SizedBox(
-              height: 20,
             ),
-            Categories(
-              setSelectedCategory: _setSelectedCategory,
+          ),
+          SliverFillRemaining(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Form(
+                    key: _form,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          hintText: 'Название задачи',
+                          hintStyle: TextStyle(
+                            color: theme.primaryTextTheme.headline4?.color,
+                          ),
+                          disabledBorder: InputBorder.none,
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                        ),
+                        style: TextStyle(
+                          color: theme.primaryTextTheme.headline4?.color,
+                          fontSize: theme.primaryTextTheme.headline6?.fontSize,
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Ввените название задачи';
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          title = value;
+                        },
+                      ),
+                    )),
+                SizedBox(
+                  height: 20,
+                ),
+                Categories(
+                  setSelectedCategory: _setSelectedCategory,
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

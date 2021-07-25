@@ -19,22 +19,37 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
-    isListsNotEmpty = Provider.of<ListProvider>(context, listen: false).items.length > 0;
+    isListsNotEmpty =
+        Provider.of<ListProvider>(context, listen: false).items.length > 0;
     super.initState();
+  }
+
+  void _setListsIsEmpty(bool isListsHasItems) {
+    if (isListsNotEmpty != isListsHasItems) {
+      setState(() {
+        isListsNotEmpty = isListsHasItems;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      floatingActionButton: isListsNotEmpty? FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.of(context).pushNamed(AddTaskScreen.routeName);
-        },
-      ) : null,
+      backgroundColor: theme.backgroundColor,
+      floatingActionButton: isListsNotEmpty
+          ? FloatingActionButton(
+              child: Icon(Icons.add),
+              onPressed: () {
+                Navigator.of(context).pushNamed(AddTaskScreen.routeName);
+              },
+            )
+          : null,
       body: FutureBuilder(
-        future: Provider.of<ListProvider>(context, listen: false)
-            .fetchAndSetLists(),
+        future: isListsNotEmpty
+            ? Future.delayed(Duration.zero)
+            : Provider.of<ListProvider>(context, listen: false)
+                .fetchAndSetLists(),
         builder: (ctx, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
@@ -46,48 +61,48 @@ class _MainScreenState extends State<MainScreen> {
               child: Text('Something went wrong'),
             );
           } else {
-            return SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  CustomHeader(
-                    isBackButton: false,
-                    title: 'Задачи',
-                    rightButton: IconButton(
-                      icon: Icon(Icons.category_outlined),
-                      onPressed: () {
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (ctx) {
-                              return BottomModal();
-                            });
-                      },
+            return CustomScrollView(
+                clipBehavior: Clip.hardEdge,
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                slivers: [
+                  SliverAppBar(
+                    pinned: true,
+                    floating: false,
+                    expandedHeight: 101,
+                    backgroundColor: theme.backgroundColor,
+                    flexibleSpace: CustomHeader(
+                      isBackButton: false,
+                      title: 'Задачи',
+                      rightButton: IconButton(
+                        icon: Icon(Icons.category_outlined),
+                        onPressed: () {
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (ctx) {
+                                return BottomModal();
+                              });
+                        },
+                      ),
                     ),
                   ),
-                  Consumer<ListProvider>(
-                    builder: (ctx, listData, child) {
+                  SliverFillRemaining(
+                    child:
+                        Consumer<ListProvider>(builder: (ctx, listData, child) {
                       final lists = listData.items;
                       final isListsHasItems = lists.length > 0;
-                      if(isListsNotEmpty != isListsHasItems) {
-                        setState(() {
-                          isListsNotEmpty = isListsHasItems;
-                        });
-                      }
+                      Future.delayed(Duration.zero, () async {
+                        _setListsIsEmpty(isListsHasItems);
+                      });
                       return ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (ctx, i) => TaskList(lists[i]),
                         itemCount: lists.length,
                         shrinkWrap: true,
                       );
-                    }
+                    }),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                ],
-              ),
-            );
+                ]);
           }
         },
       ),

@@ -31,6 +31,8 @@ class TaskItem extends StatelessWidget {
             : Icon(Icons.radio_button_off),
         title: Text(
           task.text.trim(),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
             color: isChecked
                 ? primaryTheme.overline?.color

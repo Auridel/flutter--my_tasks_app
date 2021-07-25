@@ -23,19 +23,19 @@ class _BottomModalState extends State<BottomModal> {
   void _addList() {
     final isValid = _form.currentState?.validate();
     final title = _input.currentState?.value.toString();
-    if(isValid != null && isValid && title != null && title.isNotEmpty) {
+    if (isValid != null && isValid && title != null && title.isNotEmpty) {
       setState(() {
         isFetching = true;
       });
-      Provider.of<ListProvider>(context, listen: false).addList(title)
-        .then((_) {
-          _input.currentState?.reset();
-          setState(() {
-            isFetching = false;
-            isInputVisible = false;
-          });
-      })
-      .catchError((_) {
+      Provider.of<ListProvider>(context, listen: false)
+          .addList(title)
+          .then((_) {
+        _input.currentState?.reset();
+        setState(() {
+          isFetching = false;
+          isInputVisible = false;
+        });
+      }).catchError((_) {
         setState(() {
           isFetching = false;
         });
@@ -109,47 +109,51 @@ class _BottomModalState extends State<BottomModal> {
                 ),
                 AnimatedContainer(
                     height: isInputVisible ? 48 : 0,
-                    duration: Duration(milliseconds: 100),
+                    duration: Duration(milliseconds: 150),
                     child: Form(
-                      key: _form,
+                        key: _form,
                         child: Row(
-                      children: [
-                        Expanded(
-                            child: Padding(
-                          padding: const EdgeInsets.only(left: 15),
-                          child: TextFormField(
-                            key: _input,
-                            validator: (value) {
-                              if(value == null || value.isEmpty) {
-                                return 'Введите название';
-                              }
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                                hintText: 'Введите название',
-                                border: InputBorder.none,
-                                hintStyle: TextStyle(
-                                  color:
-                                      theme.primaryTextTheme.headline4?.color,
-                                )),
-                          ),
-                        )),
-                        if (isInputVisible)
-                          IconButton(
-                              onPressed: () {
-                                FocusScope.of(context).unfocus();
-                                _addList();
-                              },
-                              icon: isFetching? SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(strokeWidth: 2,),
-                              ) : Icon(
-                                Icons.check,
-                                color: theme.primaryColor,
-                              )),
-                      ],
-                    ))),
+                          children: [
+                            Expanded(
+                                child: Padding(
+                              padding: const EdgeInsets.only(left: 15),
+                              child: TextFormField(
+                                key: _input,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Введите название';
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                    hintText: 'Введите название',
+                                    border: InputBorder.none,
+                                    hintStyle: TextStyle(
+                                      color: theme
+                                          .primaryTextTheme.headline4?.color,
+                                    )),
+                              ),
+                            )),
+                            if (isInputVisible)
+                              IconButton(
+                                  onPressed: () {
+                                    FocusScope.of(context).unfocus();
+                                    _addList();
+                                  },
+                                  icon: isFetching
+                                      ? SizedBox(
+                                          height: 20,
+                                          width: 20,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2,
+                                          ),
+                                        )
+                                      : Icon(
+                                          Icons.check,
+                                          color: theme.primaryColor,
+                                        )),
+                          ],
+                        ))),
                 GestureDetector(
                   onTap: () {
                     setState(() {

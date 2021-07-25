@@ -3,10 +3,12 @@ import 'package:my_tasks_app/helpers/custom_route_transition.dart';
 
 final ThemeData theme = ThemeData(
   primarySwatch: Colors.blue,
+  backgroundColor: Colors.white,
   primaryTextTheme: TextTheme(
       headline6: TextStyle(
         color: Colors.black87,
-        fontSize: 22,
+        fontSize: 16,
+        fontWeight: FontWeight.normal,
       ),
       headline4: TextStyle(
         color: Colors.black54,

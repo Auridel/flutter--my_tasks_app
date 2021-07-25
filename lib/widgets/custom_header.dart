@@ -9,50 +9,47 @@ class CustomHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     final deviceSize = MediaQuery.of(context).size;
     return Container(
       width: deviceSize.width,
-      child: Column(
-        children: [
-          SizedBox(
-            height: 25,
-          ),
-          SizedBox(
-            width: deviceSize.width,
-            height: 100,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                if (isBackButton)
-                  Positioned(
-                      left: 20,
-                      child: IconButton(
-                        icon: Icon(Icons.arrow_back),
-                        color: Colors.black,
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      )),
-                if (title != null && title!.isNotEmpty)
-                  Positioned(
-                    left: 70,
-                    child: Text(
-                      title!,
-                      style: TextStyle(
-                        color:
-                            Theme.of(context).primaryTextTheme.headline6?.color,
-                        fontSize: Theme.of(context)
-                            .primaryTextTheme
-                            .headline6
-                            ?.fontSize,
-                      ),
-                    ),
-                  ),
-                if (rightButton != null) Positioned(child: rightButton!, right: 20,),
-              ],
+      child: SizedBox(
+        width: deviceSize.width,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Container(
+              padding: const EdgeInsets.only(bottom: 5),
+              child: isBackButton
+                  ? IconButton(
+                      icon: Icon(Icons.arrow_back),
+                      color: Colors.black,
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
+                  : null,
             ),
-          ),
-        ],
+            Flexible(
+              flex: 2,
+              child: FlexibleSpaceBar(
+                title: Text(
+                  title ?? '',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                      fontWeight: theme.primaryTextTheme.headline6?.fontWeight,
+                      color: theme.primaryTextTheme.headline6?.color,
+                      fontSize: theme.primaryTextTheme.headline6?.fontSize),
+                ),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.only(bottom: 5),
+              child: rightButton,
+            ),
+          ],
+        ),
       ),
     );
   }
